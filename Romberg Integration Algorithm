@@ -1,0 +1,34 @@
+% Romberg integration algorithm
+
+ f= input('Enter your function: ');
+ ll = input('Lower limit value:  ');
+ ul = input('upper limit value:  ');
+ N = input('Enter no. of subintervals, n:  ');
+ 
+ h = ul-ll;
+ r = zeros(2,N+1);
+ r(1,1) = (f(ll)+f(ul))/2*h;
+ fprintf('Romberg integration table:');
+ fprintf('\n %11.8f\n\n', r(1,1));
+  for i = 2:N
+    sum = 0;
+    for k = 1:2^(i-2)
+       sum = sum+f(ll+(k-0.5)*h);
+    end
+    r(2,1) = (r(1,1)+h*sum)/2;
+  
+    for j = 2:i
+       l = 2^(2*(j-1));
+       r(2,j) = r(2,j-1)+(r(2,j-1)-r(1,j-1))/(l-1);
+    end
+
+ for k = 1:i
+       fprintf(' %11.8f',r(2,k));
+    end
+ 
+    fprintf('\n\n');
+    h = h/2;
+    for j = 1:i
+       r(1,j) = r(2,j);
+    end
+ end
